@@ -387,22 +387,56 @@ const Navigation = {
     // Signup method - only way to create new accounts
     async signupUser(email, password, userData) {
         try {
-            if (!this.isOnline || !window.healthDB) {
-                return { success: false, error: 'Internet connection required for signup' };
+            // Check network status
+            const isOnline = navigator.onLine;
+            if (!isOnline) {
+                return { success: false, error: 'No internet connection. Please check your network and try again.' };
+            }
+            
+            if (!window.healthDB) {
+                return { success: false, error: 'Application not properly initialized. Please refresh the page and try again.' };
             }
             
             // Use Firebase to create account
+            console.log('Attempting to sign up user:', email);
             const result = await window.healthDB.signUp(email, password, userData);
-            if (result.success) {
-                this.currentUser = result.user.uid;
-                await this.loadUserData();
+            
+            if (result && result.success) {
+                console.log('Signup successful for user:', email);
+                // Update app state with the new user
+                if (window.AppState) {
+                    await AppState.loadFromDatabase();
+                }
                 return { success: true, user: result.user };
             } else {
-                return { success: false, error: result.error };
+                const errorMsg = result?.error || 'Failed to create account. Please try again.';
+                console.error('Signup failed:', errorMsg);
+                return { success: false, error: errorMsg };
             }
         } catch (error) {
             console.error('Signup error:', error);
-            return { success: false, error: error.message };
+            const errorMsg = error.code ? this.getFirebaseErrorMessage(error) : error.message || 'An unknown error occurred';
+            return { success: false, error: errorMsg };
+        }
+    },
+    
+    // Helper function to get user-friendly Firebase error messages
+    getFirebaseErrorMessage(error) {
+        if (!error.code) return error.message || 'An error occurred';
+        
+        switch(error.code) {
+            case 'auth/email-already-in-use':
+                return 'This email is already in use. Please use a different email or try logging in.';
+            case 'auth/invalid-email':
+                return 'Please enter a valid email address.';
+            case 'auth/operation-not-allowed':
+                return 'Email/password accounts are not enabled. Please contact support.';
+            case 'auth/weak-password':
+                return 'Password should be at least 6 characters long.';
+            case 'auth/network-request-failed':
+                return 'Network error. Please check your internet connection and try again.';
+            default:
+                return error.message || 'An error occurred during signup. Please try again.';
         }
     },
     
