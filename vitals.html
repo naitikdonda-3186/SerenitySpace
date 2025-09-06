@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vital Signs - Health Management Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="dashboard.html" class="logo">HealthCare+</a>
+                
+                <ul class="nav-menu">
+                    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="medications.html" class="nav-link">Medications</a></li>
+                    <li><a href="appointments.html" class="nav-link">Appointments</a></li>
+                    <li><a href="vitals.html" class="nav-link active">Vitals</a></li>
+                    <li><a href="profile.html" class="nav-link">Profile</a></li>
+                </ul>
+                
+                <div class="nav-actions">
+                    <button class="btn btn-outline btn-sm" id="logoutBtn">Logout</button>
+                    <button class="nav-toggle">☰</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sidebar for mobile -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <span class="sidebar-icon">📊</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="medications.html" class="sidebar-link">
+                        <span class="sidebar-icon">💊</span>
+                        Medications
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="appointments.html" class="sidebar-link">
+                        <span class="sidebar-icon">📅</span>
+                        Appointments
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="vitals.html" class="sidebar-link active">
+                        <span class="sidebar-icon">❤️</span>
+                        Vital Signs
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="profile.html" class="sidebar-link">
+                        <span class="sidebar-icon">👤</span>
+                        Profile
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <span class="sidebar-icon">⚙️</span>
+                        Settings
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="help.html" class="sidebar-link">
+                        <span class="sidebar-icon">❓</span>
+                        Help
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800 mb-2">Vital Signs</h1>
+                        <p class="text-muted">Track and monitor your health metrics over time</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="Modal.open('addVitalModal')">
+                        Log Vitals
+                    </button>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="stats-grid mb-8">
+                    <div class="stat-card">
+                        <div class="stat-value" id="latestBP">--/--</div>
+                        <div class="stat-label">Latest Blood Pressure</div>
+                        <div class="stat-change" id="bpTrend">Normal range</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value" id="latestHR">--</div>
+                        <div class="stat-label">Latest Heart Rate</div>
+                        <div class="stat-change" id="hrTrend">bpm</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value" id="latestWeight">--</div>
+                        <div class="stat-label">Latest Weight (kg)</div>
+                        <div class="stat-change" id="weightTrend">--</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value" id="latestSugar">--</div>
+                        <div class="stat-label">Latest Blood Sugar</div>
+                        <div class="stat-change" id="sugarTrend">mg/dL</div>
+                    </div>
+                </div>
+
+                <!-- Charts Grid -->
+                <div class="card-grid mb-8">
+                    <!-- Blood Pressure Chart -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Blood Pressure Trends</h2>
+                            <p class="card-subtitle">Last 30 days</p>
+                        </div>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="bpChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Heart Rate Chart -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Heart Rate Trends</h2>
+                            <p class="card-subtitle">Last 30 days</p>
+                        </div>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="hrChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Weight Chart -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Weight Trends</h2>
+                            <p class="card-subtitle">Last 30 days</p>
+                        </div>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="weightChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Blood Sugar Chart -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Blood Sugar Trends</h2>
+                            <p class="card-subtitle">Last 30 days</p>
+                        </div>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="sugarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Readings -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Recent Readings</h2>
+                        <p class="card-subtitle">Your latest vital sign measurements</p>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Blood Pressure</th>
+                                    <th>Heart Rate</th>
+                                    <th>Weight</th>
+                                    <th>Blood Sugar</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vitalsTable">
+                                <!-- Vitals will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Vital Signs Modal -->
+    <div class="modal-overlay" id="addVitalModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Log Vital Signs</h2>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="vitalForm">
+                    <div class="form-group">
+                        <label for="vitalDate" class="form-label">Date & Time</label>
+                        <input type="datetime-local" id="vitalDate" name="date" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Blood Pressure (mmHg)</label>
+                        <div class="flex gap-2 items-center">
+                            <input type="number" id="systolic" name="systolic" class="form-input" placeholder="120" min="70" max="250">
+                            <span>/</span>
+                            <input type="number" id="diastolic" name="diastolic" class="form-input" placeholder="80" min="40" max="150">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="heartRate" class="form-label">Heart Rate (bpm)</label>
+                        <input type="number" id="heartRate" name="heartRate" class="form-input" placeholder="72" min="30" max="220">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weight" class="form-label">Weight (kg)</label>
+                        <input type="number" id="weight" name="weight" class="form-input" placeholder="70.5" step="0.1" min="20" max="300">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bloodSugar" class="form-label">Blood Sugar (mg/dL)</label>
+                        <input type="number" id="bloodSugar" name="bloodSugar" class="form-input" placeholder="95" min="50" max="400">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="temperature" class="form-label">Temperature (°F)</label>
+                        <input type="number" id="temperature" name="temperature" class="form-input" placeholder="98.6" step="0.1" min="90" max="110">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes" class="form-label">Notes</label>
+                        <textarea id="notes" name="notes" class="form-textarea" placeholder="Any additional notes about your readings"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="Modal.close('addVitalModal')">Cancel</button>
+                <button type="submit" form="vitalForm" class="btn btn-primary">Save Readings</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="loading-states.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="app.js"></script>
+    <script>
+        let charts = {};
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadVitals();
+            setupEventListeners();
+            updateStats();
+            initializeCharts();
+            
+            // Set default date to now
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('vitalDate').value = now.toISOString().slice(0, 16);
+        });
+
+        function setupEventListeners() {
+            document.getElementById('vitalForm').addEventListener('submit', async function(e) { await handleVitalSubmit(e); });
+        }
+
+        function loadVitals() {
+            renderVitalsTable();
+        }
+
+        function renderVitalsTable() {
+            const container = document.getElementById('vitalsTable');
+            const vitals = AppState.vitals.slice(0, 10); // Show last 10 readings
+            
+            if (vitals.length === 0) {
+                container.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-8">
+                            <div class="text-muted">No vital signs recorded yet</div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            container.innerHTML = vitals.map(vital => `
+                <tr>
+                    <td>${Utils.formatDateTime(vital.date)}</td>
+                    <td>${vital.bloodPressure ? `${vital.bloodPressure.systolic}/${vital.bloodPressure.diastolic}` : '--'}</td>
+                    <td>${vital.heartRate || '--'}</td>
+                    <td>${vital.weight || '--'}</td>
+                    <td>${vital.bloodSugar || '--'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="deleteVital('${vital.id}')">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function handleVitalSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const vitalData = {
+                id: Utils.generateId(),
+                date: formData.get('date'),
+                bloodPressure: null,
+                heartRate: formData.get('heartRate') ? parseInt(formData.get('heartRate')) : null,
+                weight: formData.get('weight') ? parseFloat(formData.get('weight')) : null,
+                bloodSugar: formData.get('bloodSugar') ? parseInt(formData.get('bloodSugar')) : null,
+                temperature: formData.get('temperature') ? parseFloat(formData.get('temperature')) : null,
+                notes: formData.get('notes').trim()
+            };
+            
+            // Handle blood pressure
+            const systolic = formData.get('systolic');
+            const diastolic = formData.get('diastolic');
+            if (systolic && diastolic) {
+                vitalData.bloodPressure = {
+                    systolic: parseInt(systolic),
+                    diastolic: parseInt(diastolic)
+                };
+            }
+            
+            // Add vital to AppState and save
+            AppState.vitals.push(vitalData);
+            await AppState.saveVitals();
+            
+            Utils.showNotification('Vital signs logged successfully!', 'success');
+            Modal.close('addVitalModal');
+            
+            // Reset form
+            e.target.reset();
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('vitalDate').value = now.toISOString().slice(0, 16);
+            
+            // Refresh data
+            loadVitals();
+            updateStats();
+            updateCharts();
+        }
+
+        async function deleteVital(vitalId) {
+            if (confirm('Are you sure you want to delete this reading?')) {
+                const index = AppState.vitals.findIndex(vital => vital.id === vitalId);
+                if (index !== -1) {
+                    AppState.vitals.splice(index, 1);
+                    await AppState.saveVitals();
+                    Utils.showNotification('Reading deleted successfully!', 'success');
+                    loadVitals();
+                    updateStats();
+                    updateCharts();
+                }
+            }
+        }
+
+        function updateStats() {
+            const vitals = AppState.vitals;
+            if (vitals.length === 0) return;
+            
+            const latest = vitals[0];
+            
+            // Blood Pressure
+            if (latest.bloodPressure) {
+                document.getElementById('latestBP').textContent = 
+                    `${latest.bloodPressure.systolic}/${latest.bloodPressure.diastolic}`;
+                
+                const systolic = latest.bloodPressure.systolic;
+                const bpTrendEl = document.getElementById('bpTrend');
+                if (systolic < 120) {
+                    bpTrendEl.textContent = 'Normal';
+                    bpTrendEl.className = 'stat-change positive';
+                } else if (systolic < 140) {
+                    bpTrendEl.textContent = 'Elevated';
+                    bpTrendEl.className = 'stat-change';
+                } else {
+                    bpTrendEl.textContent = 'High';
+                    bpTrendEl.className = 'stat-change negative';
+                }
+            }
+            
+            // Heart Rate
+            if (latest.heartRate) {
+                document.getElementById('latestHR').textContent = latest.heartRate;
+                const hrTrendEl = document.getElementById('hrTrend');
+                if (latest.heartRate >= 60 && latest.heartRate <= 100) {
+                    hrTrendEl.textContent = 'Normal range';
+                    hrTrendEl.className = 'stat-change positive';
+                } else {
+                    hrTrendEl.textContent = 'Outside normal';
+                    hrTrendEl.className = 'stat-change negative';
+                }
+            }
+            
+            // Weight
+            if (latest.weight) {
+                document.getElementById('latestWeight').textContent = latest.weight;
+                if (vitals.length > 1 && vitals[1].weight) {
+                    const diff = latest.weight - vitals[1].weight;
+                    const weightTrendEl = document.getElementById('weightTrend');
+                    if (diff > 0) {
+                        weightTrendEl.textContent = `+${diff.toFixed(1)} kg`;
+                        weightTrendEl.className = 'stat-change negative';
+                    } else if (diff < 0) {
+                        weightTrendEl.textContent = `${diff.toFixed(1)} kg`;
+                        weightTrendEl.className = 'stat-change positive';
+                    } else {
+                        weightTrendEl.textContent = 'No change';
+                        weightTrendEl.className = 'stat-change';
+                    }
+                }
+            }
+            
+            // Blood Sugar
+            if (latest.bloodSugar) {
+                document.getElementById('latestSugar').textContent = latest.bloodSugar;
+                const sugarTrendEl = document.getElementById('sugarTrend');
+                if (latest.bloodSugar >= 70 && latest.bloodSugar <= 140) {
+                    sugarTrendEl.textContent = 'Normal range';
+                    sugarTrendEl.className = 'stat-change positive';
+                } else {
+                    sugarTrendEl.textContent = 'Outside normal';
+                    sugarTrendEl.className = 'stat-change negative';
+                }
+            }
+        }
+
+        function initializeCharts() {
+            createBloodPressureChart();
+            createHeartRateChart();
+            createWeightChart();
+            createBloodSugarChart();
+        }
+
+        function createBloodPressureChart() {
+            const ctx = document.getElementById('bpChart').getContext('2d');
+            const vitals = AppState.vitals.slice(0, 30).reverse(); // Last 30 days, chronological order
+            
+            const labels = vitals.map(v => Utils.formatDate(v.date));
+            const systolicData = vitals.map(v => v.bloodPressure ? v.bloodPressure.systolic : null);
+            const diastolicData = vitals.map(v => v.bloodPressure ? v.bloodPressure.diastolic : null);
+            
+            charts.bpChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Systolic',
+                        data: systolicData,
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Diastolic',
+                        data: diastolicData,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 60,
+                            max: 180
+                        }
+                    }
+                }
+            });
+        }
+
+        function createHeartRateChart() {
+            const ctx = document.getElementById('hrChart').getContext('2d');
+            const vitals = AppState.vitals.slice(0, 30).reverse();
+            
+            const labels = vitals.map(v => Utils.formatDate(v.date));
+            const data = vitals.map(v => v.heartRate);
+            
+            charts.hrChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Heart Rate (bpm)',
+                        data: data,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 50,
+                            max: 120
+                        }
+                    }
+                }
+            });
+        }
+
+        function createWeightChart() {
+            const ctx = document.getElementById('weightChart').getContext('2d');
+            const vitals = AppState.vitals.slice(0, 30).reverse();
+            
+            const labels = vitals.map(v => Utils.formatDate(v.date));
+            const data = vitals.map(v => v.weight);
+            
+            charts.weightChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Weight (kg)',
+                        data: data,
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        function createBloodSugarChart() {
+            const ctx = document.getElementById('sugarChart').getContext('2d');
+            const vitals = AppState.vitals.slice(0, 30).reverse();
+            
+            const labels = vitals.map(v => Utils.formatDate(v.date));
+            const data = vitals.map(v => v.bloodSugar);
+            
+            charts.sugarChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Blood Sugar (mg/dL)',
+                        data: data,
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 70,
+                            max: 200
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateCharts() {
+            // Destroy existing charts and recreate them
+            Object.values(charts).forEach(chart => chart.destroy());
+            initializeCharts();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Health Management Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card fade-in">
+            <div class="auth-header">
+                <h1 class="auth-title">Create Account</h1>
+                <p class="auth-subtitle">Join us to manage your health better</p>
+            </div>
+            
+            <form id="signupForm" class="auth-form">
+                <div class="form-group">
+                    <label for="fullName" class="form-label">Full Name</label>
+                    <input 
+                        type="text" 
+                        id="fullName" 
+                        name="fullName" 
+                        class="form-input" 
+                        placeholder="Enter your full name"
+                        required
+                    >
+                    <div class="form-error" id="fullNameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="Enter your email"
+                        required
+                    >
+                    <div class="form-error" id="emailError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-input" 
+                        placeholder="Choose a username"
+                        required
+                    >
+                    <div class="form-error" id="usernameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Create a strong password"
+                        required
+                    >
+                    <div class="form-error" id="passwordError"></div>
+                    <div class="text-xs text-muted mt-1">
+                        Password must be at least 8 characters with uppercase, lowercase, and number
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        class="form-input" 
+                        placeholder="Confirm your password"
+                        required
+                    >
+                    <div class="form-error" id="confirmPasswordError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                    <input 
+                        type="date" 
+                        id="dateOfBirth" 
+                        name="dateOfBirth" 
+                        class="form-input" 
+                        required
+                    >
+                    <div class="form-error" id="dateOfBirthError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender" class="form-label">Gender</label>
+                    <select id="gender" name="gender" class="form-select" required>
+                        <option value="">Select gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                        <option value="prefer-not-to-say">Prefer not to say</option>
+                    </select>
+                    <div class="form-error" id="genderError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="terms" name="terms" class="mr-2" required>
+                        <span class="text-sm">
+                            I agree to the <a href="#" class="auth-link">Terms of Service</a> and 
+                            <a href="#" class="auth-link">Privacy Policy</a>
+                        </span>
+                    </label>
+                    <div class="form-error" id="termsError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="newsletter" name="newsletter" class="mr-2">
+                        <span class="text-sm text-muted">
+                            Subscribe to health tips and updates
+                        </span>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-lg w-full mb-4">
+                    Create Account
+                </button>
+                
+                <div class="text-center">
+                    <p class="text-sm text-muted">
+                        Already have an account? 
+                        <a href="login.html" class="auth-link">Sign in here</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="loading-states.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Signup form handling
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const dateOfBirth = document.getElementById('dateOfBirth').value;
+            const gender = document.getElementById('gender').value;
+            const terms = document.getElementById('terms').checked;
+            
+            // Clear previous errors
+            clearErrors();
+            
+            let isValid = true;
+            
+            // Validate full name
+            if (!fullName) {
+                showFieldError('fullNameError', 'Full name is required');
+                isValid = false;
+            } else if (fullName.length < 2) {
+                showFieldError('fullNameError', 'Full name must be at least 2 characters');
+                isValid = false;
+            }
+            
+            // Validate email
+            if (!email) {
+                showFieldError('emailError', 'Email is required');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showFieldError('emailError', 'Please enter a valid email address');
+                isValid = false;
+            }
+            
+            // Validate username
+            if (!username) {
+                showFieldError('usernameError', 'Username is required');
+                isValid = false;
+            } else if (username.length < 3) {
+                showFieldError('usernameError', 'Username must be at least 3 characters');
+                isValid = false;
+            } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                showFieldError('usernameError', 'Username can only contain letters, numbers, and underscores');
+                isValid = false;
+            }
+            
+            // Validate password
+            if (!password) {
+                showFieldError('passwordError', 'Password is required');
+                isValid = false;
+            } else if (!isValidPassword(password)) {
+                showFieldError('passwordError', 'Password must be at least 8 characters with uppercase, lowercase, and number');
+                isValid = false;
+            }
+            
+            // Validate confirm password
+            if (!confirmPassword) {
+                showFieldError('confirmPasswordError', 'Please confirm your password');
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                showFieldError('confirmPasswordError', 'Passwords do not match');
+                isValid = false;
+            }
+            
+            // Validate date of birth
+            if (!dateOfBirth) {
+                showFieldError('dateOfBirthError', 'Date of birth is required');
+                isValid = false;
+            } else {
+                const birthDate = new Date(dateOfBirth);
+                const today = new Date();
+                const age = today.getFullYear() - birthDate.getFullYear();
+                
+                if (age < 13) {
+                    showFieldError('dateOfBirthError', 'You must be at least 13 years old');
+                    isValid = false;
+                } else if (age > 120) {
+                    showFieldError('dateOfBirthError', 'Please enter a valid date of birth');
+                    isValid = false;
+                }
+            }
+            
+            // Validate gender
+            if (!gender) {
+                showFieldError('genderError', 'Please select your gender');
+                isValid = false;
+            }
+            
+            // Validate terms
+            if (!terms) {
+                showFieldError('termsError', 'You must agree to the terms and conditions');
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                return;
+            }
+            
+            // Simulate account creation (in real app, this would be an API call)
+            const userData = {
+                fullName,
+                email,
+                username,
+                dateOfBirth,
+                gender,
+                newsletter: document.getElementById('newsletter').checked
+            };
+            
+            const submitBtn = document.querySelector('button[type="submit"]');
+            loadingManager.showButtonLoader(submitBtn, 'Creating account...');
+            
+            // Use Firebase authentication for signup
+            Navigation.signupUser(email, password, userData).then(result => {
+                loadingManager.hideButtonLoader(submitBtn);
+                
+                if (result.success) {
+                    // Show success message and redirect
+                    showAlert('Account created successfully! Redirecting to dashboard...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 2000);
+                } else {
+                    showAlert('Signup failed: ' + result.error, 'error');
+                }
+            }).catch(error => {
+                loadingManager.hideButtonLoader(submitBtn);
+                showAlert('Signup error: ' + error.message, 'error');
+            });
+            
+            return; // Prevent the original redirect code from running
+        });
+        
+        // Helper functions
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('.form-error');
+            errorElements.forEach(element => {
+                element.textContent = '';
+            });
+        }
+        
+        function showFieldError(elementId, message) {
+            document.getElementById(elementId).textContent = message;
+        }
+        
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        function isValidPassword(password) {
+            // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+            return passwordRegex.test(password);
+        }
+        
+        // Alert function
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            
+            document.querySelector('.auth-card').insertBefore(alertDiv, document.querySelector('.auth-form'));
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+        
+        // Real-time password validation
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const errorElement = document.getElementById('passwordError');
+            
+            if (password && !isValidPassword(password)) {
+                errorElement.textContent = 'Password must be at least 8 characters with uppercase, lowercase, and number';
+            } else {
+                errorElement.textContent = '';
+            }
+        });
+        
+        // Real-time confirm password validation
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            const errorElement = document.getElementById('confirmPasswordError');
+            
+            if (confirmPassword && password !== confirmPassword) {
+                errorElement.textContent = 'Passwords do not match';
+            } else {
+                errorElement.textContent = '';
+            }
+        });
+    </script>
+</body>
+</html>

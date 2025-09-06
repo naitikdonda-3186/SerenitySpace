@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Health Management Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="dashboard.html" class="logo">HealthCare+</a>
+                
+                <ul class="nav-menu">
+                    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="medications.html" class="nav-link">Medications</a></li>
+                    <li><a href="appointments.html" class="nav-link">Appointments</a></li>
+                    <li><a href="vitals.html" class="nav-link">Vitals</a></li>
+                    <li><a href="profile.html" class="nav-link active">Profile</a></li>
+                </ul>
+                
+                <div class="nav-actions">
+                    <button class="btn btn-outline btn-sm" id="logoutBtn">Logout</button>
+                    <button class="nav-toggle">☰</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sidebar for mobile -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <span class="sidebar-icon">📊</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="medications.html" class="sidebar-link">
+                        <span class="sidebar-icon">💊</span>
+                        Medications
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="appointments.html" class="sidebar-link">
+                        <span class="sidebar-icon">📅</span>
+                        Appointments
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="vitals.html" class="sidebar-link">
+                        <span class="sidebar-icon">❤️</span>
+                        Vital Signs
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="profile.html" class="sidebar-link active">
+                        <span class="sidebar-icon">👤</span>
+                        Profile
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <span class="sidebar-icon">⚙️</span>
+                        Settings
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="help.html" class="sidebar-link">
+                        <span class="sidebar-icon">❓</span>
+                        Help
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Header -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">My Profile</h1>
+                    <p class="text-muted">Manage your personal information and health profile</p>
+                </div>
+
+                <div class="card-grid">
+                    <!-- Profile Information -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Personal Information</h2>
+                            <button class="btn btn-outline btn-sm" id="editProfileBtn">Edit</button>
+                        </div>
+                        
+                        <div id="profileView">
+                            <div class="profile-avatar mb-6 text-center">
+                                <div class="avatar-circle">
+                                    <span id="avatarInitials">U</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline mt-3" onclick="document.getElementById('avatarInput').click()">Change Photo</button>
+                                <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                            </div>
+                            
+                            <div class="profile-info">
+                                <div class="info-row">
+                                    <span class="info-label">Full Name:</span>
+                                    <span id="displayName">--</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Email:</span>
+                                    <span id="displayEmail">--</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Date of Birth:</span>
+                                    <span id="displayDOB">--</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Gender:</span>
+                                    <span id="displayGender">--</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Phone:</span>
+                                    <span id="displayPhone">--</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Emergency Contact:</span>
+                                    <span id="displayEmergency">--</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <form id="profileForm" class="hidden">
+                            <div class="form-group">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input type="text" id="fullName" name="fullName" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                                <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-input">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select id="gender" name="gender" class="form-select">
+                                    <option value="">Select gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                    <option value="prefer-not-to-say">Prefer not to say</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" class="form-input">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="emergencyContact" class="form-label">Emergency Contact</label>
+                                <input type="text" id="emergencyContact" name="emergencyContact" class="form-input" placeholder="Name and phone number">
+                            </div>
+                            
+                            <div class="flex gap-3">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Health Information -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Health Information</h2>
+                            <button class="btn btn-outline btn-sm" id="editHealthBtn">Edit</button>
+                        </div>
+                        
+                        <div id="healthView">
+                            <div class="health-info">
+                                <div class="info-row">
+                                    <span class="info-label">Blood Type:</span>
+                                    <span id="displayBloodType">--</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Height:</span>
+                                    <span id="displayHeight">--</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Allergies:</span>
+                                    <span id="displayAllergies">--</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Medical Conditions:</span>
+                                    <span id="displayConditions">--</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Insurance Provider:</span>
+                                    <span id="displayInsurance">--</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <form id="healthForm" class="hidden">
+                            <div class="form-group">
+                                <label for="bloodType" class="form-label">Blood Type</label>
+                                <select id="bloodType" name="bloodType" class="form-select">
+                                    <option value="">Select blood type</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="height" class="form-label">Height (cm)</label>
+                                <input type="number" id="height" name="height" class="form-input" min="100" max="250">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="allergies" class="form-label">Allergies</label>
+                                <textarea id="allergies" name="allergies" class="form-textarea" placeholder="List any allergies or adverse reactions"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="conditions" class="form-label">Medical Conditions</label>
+                                <textarea id="conditions" name="conditions" class="form-textarea" placeholder="List any chronic conditions or medical history"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="insurance" class="form-label">Insurance Provider</label>
+                                <input type="text" id="insurance" name="insurance" class="form-input" placeholder="Insurance company and policy number">
+                            </div>
+                            
+                            <div class="flex gap-3">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                <button type="button" class="btn btn-secondary" id="cancelHealthBtn">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Account Settings -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Account Settings</h2>
+                        </div>
+                        
+                        <div class="settings-list">
+                            <div class="setting-item">
+                                <div>
+                                    <h4 class="font-medium">Change Password</h4>
+                                    <p class="text-sm text-muted">Update your account password</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm" onclick="Modal.open('changePasswordModal')">Change</button>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div>
+                                    <h4 class="font-medium">Data Export</h4>
+                                    <p class="text-sm text-muted">Download your health data</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm" onclick="exportData()">Export</button>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div>
+                                    <h4 class="font-medium text-danger">Delete Account</h4>
+                                    <p class="text-sm text-muted">Permanently delete your account and data</p>
+                                </div>
+                                <button class="btn btn-danger btn-sm" onclick="Modal.open('deleteAccountModal')">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal-overlay" id="changePasswordModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Change Password</h2>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label for="currentPassword" class="form-label">Current Password</label>
+                        <input type="password" id="currentPassword" name="currentPassword" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newPassword" class="form-label">New Password</label>
+                        <input type="password" id="newPassword" name="newPassword" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
+                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" class="form-input" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="Modal.close('changePasswordModal')">Cancel</button>
+                <button type="submit" form="passwordForm" class="btn btn-primary">Update Password</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Modal -->
+    <div class="modal-overlay" id="deleteAccountModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Delete Account</h2>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger mb-4">
+                    <strong>Warning:</strong> This action cannot be undone. All your health data will be permanently deleted.
+                </div>
+                
+                <form id="deleteForm">
+                    <div class="form-group">
+                        <label for="deleteConfirmation" class="form-label">Type "DELETE" to confirm:</label>
+                        <input type="text" id="deleteConfirmation" name="deleteConfirmation" class="form-input" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="Modal.close('deleteAccountModal')">Cancel</button>
+                <button type="submit" form="deleteForm" class="btn btn-danger">Delete Account</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="loading-states.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProfile();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('editProfileBtn').addEventListener('click', toggleProfileEdit);
+            document.getElementById('cancelEditBtn').addEventListener('click', cancelProfileEdit);
+            document.getElementById('profileForm').addEventListener('submit', saveProfile);
+            
+            document.getElementById('editHealthBtn').addEventListener('click', toggleHealthEdit);
+            document.getElementById('cancelHealthBtn').addEventListener('click', cancelHealthEdit);
+            document.getElementById('healthForm').addEventListener('submit', saveHealthInfo);
+            
+            document.getElementById('passwordForm').addEventListener('submit', changePassword);
+            document.getElementById('deleteForm').addEventListener('submit', deleteAccount);
+            document.getElementById('avatarInput').addEventListener('change', handleAvatarUpload);
+        }
+
+        function loadProfile() {
+            const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            const userEmail = localStorage.getItem('userEmail') || '';
+            const userName = localStorage.getItem('userName') || '';
+            
+            document.getElementById('displayName').textContent = userName || userProfile.fullName || '--';
+            document.getElementById('displayEmail').textContent = userEmail || '--';
+            document.getElementById('displayDOB').textContent = userProfile.dateOfBirth ? Utils.formatDate(userProfile.dateOfBirth) : '--';
+            document.getElementById('displayGender').textContent = userProfile.gender || '--';
+            document.getElementById('displayPhone').textContent = userProfile.phone || '--';
+            document.getElementById('displayEmergency').textContent = userProfile.emergencyContact || '--';
+            
+            document.getElementById('displayBloodType').textContent = userProfile.bloodType || '--';
+            document.getElementById('displayHeight').textContent = userProfile.height ? userProfile.height + ' cm' : '--';
+            document.getElementById('displayAllergies').textContent = userProfile.allergies || '--';
+            document.getElementById('displayConditions').textContent = userProfile.conditions || '--';
+            document.getElementById('displayInsurance').textContent = userProfile.insurance || '--';
+            
+            const initials = userName ? userName.split(' ').map(n => n[0]).join('').toUpperCase() : 'U';
+            document.getElementById('avatarInitials').textContent = initials;
+        }
+
+        function toggleProfileEdit() {
+            document.getElementById('profileView').classList.add('hidden');
+            document.getElementById('profileForm').classList.remove('hidden');
+            document.getElementById('editProfileBtn').classList.add('hidden');
+            
+            const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            const userName = localStorage.getItem('userName') || '';
+            const userEmail = localStorage.getItem('userEmail') || '';
+            
+            document.getElementById('fullName').value = userName || userProfile.fullName || '';
+            document.getElementById('email').value = userEmail || '';
+            document.getElementById('dateOfBirth').value = userProfile.dateOfBirth || '';
+            document.getElementById('gender').value = userProfile.gender || '';
+            document.getElementById('phone').value = userProfile.phone || '';
+            document.getElementById('emergencyContact').value = userProfile.emergencyContact || '';
+        }
+
+        function cancelProfileEdit() {
+            document.getElementById('profileView').classList.remove('hidden');
+            document.getElementById('profileForm').classList.add('hidden');
+            document.getElementById('editProfileBtn').classList.remove('hidden');
+        }
+
+        function saveProfile(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const profileData = {
+                fullName: formData.get('fullName'),
+                email: formData.get('email'),
+                dateOfBirth: formData.get('dateOfBirth'),
+                gender: formData.get('gender'),
+                phone: formData.get('phone'),
+                emergencyContact: formData.get('emergencyContact')
+            };
+            
+            localStorage.setItem('userName', profileData.fullName);
+            localStorage.setItem('userEmail', profileData.email);
+            
+            const existingProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            const updatedProfile = { ...existingProfile, ...profileData };
+            localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
+            
+            Utils.showNotification('Profile updated successfully!', 'success');
+            cancelProfileEdit();
+            loadProfile();
+        }
+
+        function toggleHealthEdit() {
+            document.getElementById('healthView').classList.add('hidden');
+            document.getElementById('healthForm').classList.remove('hidden');
+            document.getElementById('editHealthBtn').classList.add('hidden');
+            
+            const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            
+            document.getElementById('bloodType').value = userProfile.bloodType || '';
+            document.getElementById('height').value = userProfile.height || '';
+            document.getElementById('allergies').value = userProfile.allergies || '';
+            document.getElementById('conditions').value = userProfile.conditions || '';
+            document.getElementById('insurance').value = userProfile.insurance || '';
+        }
+
+        function cancelHealthEdit() {
+            document.getElementById('healthView').classList.remove('hidden');
+            document.getElementById('healthForm').classList.add('hidden');
+            document.getElementById('editHealthBtn').classList.remove('hidden');
+        }
+
+        function saveHealthInfo(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const healthData = {
+                bloodType: formData.get('bloodType'),
+                height: formData.get('height'),
+                allergies: formData.get('allergies'),
+                conditions: formData.get('conditions'),
+                insurance: formData.get('insurance')
+            };
+            
+            const existingProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            const updatedProfile = { ...existingProfile, ...healthData };
+            localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
+            
+            Utils.showNotification('Health information updated successfully!', 'success');
+            cancelHealthEdit();
+            loadProfile();
+        }
+
+        function changePassword(e) {
+            e.preventDefault();
+            
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmNewPassword').value;
+            
+            if (newPassword !== confirmPassword) {
+                Utils.showNotification('New passwords do not match', 'danger');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                Utils.showNotification('Password must be at least 8 characters long', 'danger');
+                return;
+            }
+            
+            Utils.showNotification('Password updated successfully!', 'success');
+            Modal.close('changePasswordModal');
+            document.getElementById('passwordForm').reset();
+        }
+
+        function deleteAccount(e) {
+            e.preventDefault();
+            
+            const confirmation = document.getElementById('deleteConfirmation').value;
+            
+            if (confirmation !== 'DELETE') {
+                Utils.showNotification('Please type "DELETE" to confirm', 'danger');
+                return;
+            }
+            
+            if (confirm('Are you absolutely sure? This action cannot be undone.')) {
+                localStorage.clear();
+                Utils.showNotification('Account deleted successfully', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+            }
+        }
+
+        function handleAvatarUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                Utils.showNotification('Avatar updated successfully!', 'success');
+            }
+        }
+
+        function exportData() {
+            const data = {
+                profile: JSON.parse(localStorage.getItem('userProfile') || '{}'),
+                medications: AppState.medications,
+                appointments: AppState.appointments,
+                vitals: AppState.vitals,
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'health-data-export.json';
+            link.click();
+            
+            Utils.showNotification('Health data exported successfully!', 'success');
+        }
+    </script>
+
+    <style>
+        .avatar-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 auto;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-3) 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: 500;
+            color: var(--gray-600);
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-4) 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</body>
+</html>

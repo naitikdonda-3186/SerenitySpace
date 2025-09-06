@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Resources - Health Management Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="dashboard.html" class="logo">HealthCare+</a>
+                
+                <ul class="nav-menu">
+                    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="medications.html" class="nav-link">Medications</a></li>
+                    <li><a href="appointments.html" class="nav-link">Appointments</a></li>
+                    <li><a href="vitals.html" class="nav-link">Vitals</a></li>
+                    <li><a href="profile.html" class="nav-link">Profile</a></li>
+                </ul>
+                
+                <div class="nav-actions">
+                    <button class="btn btn-outline btn-sm" id="logoutBtn">Logout</button>
+                    <button class="nav-toggle">☰</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sidebar for mobile -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <span class="sidebar-icon">📊</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="medications.html" class="sidebar-link">
+                        <span class="sidebar-icon">💊</span>
+                        Medications
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="appointments.html" class="sidebar-link">
+                        <span class="sidebar-icon">📅</span>
+                        Appointments
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="vitals.html" class="sidebar-link">
+                        <span class="sidebar-icon">❤️</span>
+                        Vital Signs
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="profile.html" class="sidebar-link">
+                        <span class="sidebar-icon">👤</span>
+                        Profile
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <span class="sidebar-icon">⚙️</span>
+                        Settings
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="help.html" class="sidebar-link active">
+                        <span class="sidebar-icon">❓</span>
+                        Help
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Header -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Help & Resources</h1>
+                    <p class="text-muted">Health tips, FAQs, and emergency information</p>
+                </div>
+
+                <div class="card-grid">
+                    <!-- Health Tips -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Daily Health Tips</h2>
+                            <p class="card-subtitle">Simple ways to improve your wellbeing</p>
+                        </div>
+                        
+                        <div class="health-tips">
+                            <div class="tip-item">
+                                <div class="tip-icon">💧</div>
+                                <div>
+                                    <h4 class="font-semibold">Stay Hydrated</h4>
+                                    <p class="text-muted">Drink 8-10 glasses of water daily to maintain healthy blood pressure and support medication effectiveness.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="tip-item">
+                                <div class="tip-icon">🚶‍♂️</div>
+                                <div>
+                                    <h4 class="font-semibold">Regular Exercise</h4>
+                                    <p class="text-muted">Aim for 30 minutes of moderate exercise daily. Walking, swimming, or cycling can improve heart health.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="tip-item">
+                                <div class="tip-icon">🥗</div>
+                                <div>
+                                    <h4 class="font-semibold">Balanced Diet</h4>
+                                    <p class="text-muted">Include fruits, vegetables, whole grains, and lean proteins. Limit processed foods and excess sodium.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="tip-item">
+                                <div class="tip-icon">😴</div>
+                                <div>
+                                    <h4 class="font-semibold">Quality Sleep</h4>
+                                    <p class="text-muted">Get 7-9 hours of sleep nightly. Good sleep helps regulate hormones and supports immune function.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="tip-item">
+                                <div class="tip-icon">🧘‍♀️</div>
+                                <div>
+                                    <h4 class="font-semibold">Stress Management</h4>
+                                    <p class="text-muted">Practice meditation, deep breathing, or yoga to reduce stress and improve mental health.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contacts -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Emergency Contacts</h2>
+                            <p class="card-subtitle">Important numbers to keep handy</p>
+                        </div>
+                        
+                        <div class="emergency-contacts">
+                            <div class="contact-item">
+                                <div class="contact-icon">🚨</div>
+                                <div>
+                                    <h4 class="font-semibold text-danger">Emergency Services</h4>
+                                    <p class="text-lg font-bold">911</p>
+                                    <p class="text-muted">For life-threatening emergencies</p>
+                                </div>
+                                <button class="btn btn-danger btn-sm" onclick="window.open('tel:911')">Call</button>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="contact-icon">☎️</div>
+                                <div>
+                                    <h4 class="font-semibold">Poison Control</h4>
+                                    <p class="text-lg font-bold">1-800-222-1222</p>
+                                    <p class="text-muted">24/7 poison emergency helpline</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm" onclick="window.open('tel:18002221222')">Call</button>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="contact-icon">🏥</div>
+                                <div>
+                                    <h4 class="font-semibold">Nearest Hospital</h4>
+                                    <p class="text-lg font-bold">General Hospital</p>
+                                    <p class="text-muted">123 Main St, City, State</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm" onclick="window.open('https://maps.google.com/?q=hospital+near+me')">Directions</button>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="contact-icon">👨‍⚕️</div>
+                                <div>
+                                    <h4 class="font-semibold">Primary Care Doctor</h4>
+                                    <p class="text-lg font-bold" id="primaryDoctor">Not Set</p>
+                                    <p class="text-muted">Your main healthcare provider</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm" onclick="Modal.open('addDoctorModal')">Add</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQs -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Frequently Asked Questions</h2>
+                            <p class="card-subtitle">Common questions about using the platform</p>
+                        </div>
+                        
+                        <div class="faq-list">
+                            <div class="faq-item">
+                                <button class="faq-question" onclick="toggleFAQ(this)">
+                                    <span>How do I add a new medication?</span>
+                                    <span class="faq-toggle">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Go to the Medications page and click "Add Medication". Fill in the medication name, dosage, frequency, and timing. You can also add special instructions and set reminders.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question" onclick="toggleFAQ(this)">
+                                    <span>How do I log my vital signs?</span>
+                                    <span class="faq-toggle">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Visit the Vitals page and click "Log Vitals". Enter your blood pressure, heart rate, weight, and other measurements. The system will automatically track trends over time.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question" onclick="toggleFAQ(this)">
+                                    <span>Can I export my health data?</span>
+                                    <span class="faq-toggle">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Yes! Go to your Profile page and click "Export" in the Account Settings section. This will download a JSON file with all your health data.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question" onclick="toggleFAQ(this)">
+                                    <span>How do I set up medication reminders?</span>
+                                    <span class="faq-toggle">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>When adding or editing a medication, make sure the "Enable reminders" checkbox is checked. The system will show upcoming doses on your dashboard.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question" onclick="toggleFAQ(this)">
+                                    <span>Is my health data secure?</span>
+                                    <span class="faq-toggle">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Your data is stored locally in your browser and is not transmitted to external servers. For additional security, consider using a password manager and enabling two-factor authentication.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <button class="faq-question" onclick="toggleFAQ(this)">
+                                    <span>What should I do if I miss a medication dose?</span>
+                                    <span class="faq-toggle">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>If you miss a dose, take it as soon as you remember, unless it's almost time for your next dose. Never double up on doses. Consult your doctor if you frequently miss medications.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Health Resources -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Health Resources</h2>
+                            <p class="card-subtitle">Trusted sources for health information</p>
+                        </div>
+                        
+                        <div class="resource-list">
+                            <div class="resource-item">
+                                <div class="resource-icon">🏥</div>
+                                <div>
+                                    <h4 class="font-semibold">Mayo Clinic</h4>
+                                    <p class="text-muted">Comprehensive health information and medical advice</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm" onclick="window.open('https://mayoclinic.org', '_blank')">Visit</button>
+                            </div>
+                            
+                            <div class="resource-item">
+                                <div class="resource-icon">🏛️</div>
+                                <div>
+                                    <h4 class="font-semibold">CDC</h4>
+                                    <p class="text-muted">Centers for Disease Control and Prevention</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm" onclick="window.open('https://cdc.gov', '_blank')">Visit</button>
+                            </div>
+                            
+                            <div class="resource-item">
+                                <div class="resource-icon">🩺</div>
+                                <div>
+                                    <h4 class="font-semibold">WebMD</h4>
+                                    <p class="text-muted">Medical information and health tools</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm" onclick="window.open('https://webmd.com', '_blank')">Visit</button>
+                            </div>
+                            
+                            <div class="resource-item">
+                                <div class="resource-icon">💊</div>
+                                <div>
+                                    <h4 class="font-semibold">Drugs.com</h4>
+                                    <p class="text-muted">Medication information and drug interactions</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm" onclick="window.open('https://drugs.com', '_blank')">Visit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Support -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Contact Support</h2>
+                            <p class="card-subtitle">Need help with the platform?</p>
+                        </div>
+                        
+                        <div class="support-options">
+                            <div class="support-item">
+                                <div class="support-icon">📧</div>
+                                <div>
+                                    <h4 class="font-semibold">Email Support</h4>
+                                    <p class="text-muted">Get help via email within 24 hours</p>
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="window.open('mailto:support@healthcare-platform.com')">Send Email</button>
+                            </div>
+                            
+                            <div class="support-item">
+                                <div class="support-icon">💬</div>
+                                <div>
+                                    <h4 class="font-semibold">Live Chat</h4>
+                                    <p class="text-muted">Chat with our support team (Mon-Fri, 9AM-5PM)</p>
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="Utils.showNotification('Live chat feature coming soon!', 'info')">Start Chat</button>
+                            </div>
+                            
+                            <div class="support-item">
+                                <div class="support-icon">📞</div>
+                                <div>
+                                    <h4 class="font-semibold">Phone Support</h4>
+                                    <p class="text-muted">Call us at 1-800-HEALTH-1</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm" onclick="window.open('tel:18004325841')">Call Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Doctor Modal -->
+    <div class="modal-overlay" id="addDoctorModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Add Primary Care Doctor</h2>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="doctorForm">
+                    <div class="form-group">
+                        <label for="doctorName" class="form-label">Doctor Name</label>
+                        <input type="text" id="doctorName" name="doctorName" class="form-input" placeholder="Dr. John Smith" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="doctorPhone" class="form-label">Phone Number</label>
+                        <input type="tel" id="doctorPhone" name="doctorPhone" class="form-input" placeholder="(555) 123-4567" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="doctorAddress" class="form-label">Address</label>
+                        <textarea id="doctorAddress" name="doctorAddress" class="form-textarea" placeholder="123 Medical Center Dr, City, State 12345"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="Modal.close('addDoctorModal')">Cancel</button>
+                <button type="submit" form="doctorForm" class="btn btn-primary">Save Doctor</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="loading-states.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPrimaryDoctor();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('doctorForm').addEventListener('submit', savePrimaryDoctor);
+        }
+
+        function loadPrimaryDoctor() {
+            const doctor = localStorage.getItem('primaryDoctor');
+            if (doctor) {
+                const doctorData = JSON.parse(doctor);
+                document.getElementById('primaryDoctor').textContent = doctorData.name;
+            }
+        }
+
+        function savePrimaryDoctor(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const doctorData = {
+                name: formData.get('doctorName'),
+                phone: formData.get('doctorPhone'),
+                address: formData.get('doctorAddress')
+            };
+            
+            localStorage.setItem('primaryDoctor', JSON.stringify(doctorData));
+            
+            Utils.showNotification('Primary care doctor saved successfully!', 'success');
+            Modal.close('addDoctorModal');
+            loadPrimaryDoctor();
+            
+            // Reset form
+            e.target.reset();
+        }
+
+        function toggleFAQ(button) {
+            const faqItem = button.parentElement;
+            const answer = faqItem.querySelector('.faq-answer');
+            const toggle = button.querySelector('.faq-toggle');
+            
+            const isOpen = answer.style.display === 'block';
+            
+            if (isOpen) {
+                answer.style.display = 'none';
+                toggle.textContent = '+';
+                faqItem.classList.remove('active');
+            } else {
+                answer.style.display = 'block';
+                toggle.textContent = '−';
+                faqItem.classList.add('active');
+            }
+        }
+    </script>
+
+    <style>
+        .tip-item, .contact-item, .resource-item, .support-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-4);
+            padding: var(--spacing-4) 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .tip-item:last-child, .contact-item:last-child, .resource-item:last-child, .support-item:last-child {
+            border-bottom: none;
+        }
+        
+        .tip-icon, .contact-icon, .resource-icon, .support-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        
+        .faq-question {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-4);
+            background: none;
+            border: none;
+            text-align: left;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .faq-question:hover {
+            background: var(--gray-50);
+        }
+        
+        .faq-toggle {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .faq-answer {
+            display: none;
+            padding: 0 var(--spacing-4) var(--spacing-4);
+            color: var(--gray-600);
+        }
+        
+        .faq-item.active .faq-question {
+            background: var(--gray-50);
+        }
+    </style>
+</body>
+</html>

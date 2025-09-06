@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medications - Health Management Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="dashboard.html" class="logo">HealthCare+</a>
+                
+                <ul class="nav-menu">
+                    <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="medications.html" class="nav-link active">Medications</a></li>
+                    <li><a href="appointments.html" class="nav-link">Appointments</a></li>
+                    <li><a href="vitals.html" class="nav-link">Vitals</a></li>
+                    <li><a href="profile.html" class="nav-link">Profile</a></li>
+                </ul>
+                
+                <div class="nav-actions">
+                    <button class="btn btn-outline btn-sm" id="logoutBtn">Logout</button>
+                    <button class="nav-toggle">☰</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sidebar for mobile -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <span class="sidebar-icon">📊</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="medications.html" class="sidebar-link active">
+                        <span class="sidebar-icon">💊</span>
+                        Medications
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="appointments.html" class="sidebar-link">
+                        <span class="sidebar-icon">📅</span>
+                        Appointments
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="vitals.html" class="sidebar-link">
+                        <span class="sidebar-icon">❤️</span>
+                        Vital Signs
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="profile.html" class="sidebar-link">
+                        <span class="sidebar-icon">👤</span>
+                        Profile
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <span class="sidebar-icon">⚙️</span>
+                        Settings
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="help.html" class="sidebar-link">
+                        <span class="sidebar-icon">❓</span>
+                        Help
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800 mb-2">Medications</h1>
+                        <p class="text-muted">Manage your medication schedule and reminders</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="Modal.open('addMedicationModal')">
+                        Add Medication
+                    </button>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="stats-grid mb-8">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalMedications">0</div>
+                        <div class="stat-label">Total Medications</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value" id="dueTodayCount">0</div>
+                        <div class="stat-label">Due Today</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value" id="overdueCount">0</div>
+                        <div class="stat-label">Overdue</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value" id="adherenceRate">95%</div>
+                        <div class="stat-label">Adherence Rate</div>
+                    </div>
+                </div>
+
+                <!-- Filter and Search -->
+                <div class="card mb-6">
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <div class="form-group mb-0">
+                            <input type="text" id="searchMedications" class="form-input" placeholder="Search medications...">
+                        </div>
+                        <div class="form-group mb-0">
+                            <select id="filterFrequency" class="form-select">
+                                <option value="">All Frequencies</option>
+                                <option value="Once daily">Once daily</option>
+                                <option value="Twice daily">Twice daily</option>
+                                <option value="Three times daily">Three times daily</option>
+                                <option value="As needed">As needed</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-0">
+                            <select id="filterStatus" class="form-select">
+                                <option value="">All Status</option>
+                                <option value="due">Due Now</option>
+                                <option value="upcoming">Upcoming</option>
+                                <option value="overdue">Overdue</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medications List -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Your Medications</h2>
+                        <p class="card-subtitle">Click on any medication to view details or edit</p>
+                    </div>
+                    
+                    <div id="medicationsList">
+                        <!-- Medications will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Medication Modal -->
+    <div class="modal-overlay" id="addMedicationModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="medicationModalTitle">Add Medication</h2>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="medicationForm">
+                    <input type="hidden" id="medicationId">
+                    
+                    <div class="form-group">
+                        <label for="medicationName" class="form-label">Medication Name *</label>
+                        <input type="text" id="medicationName" name="name" class="form-input" placeholder="Enter medication name" required>
+                        <div class="form-error" id="nameError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="medicationDosage" class="form-label">Dosage *</label>
+                        <input type="text" id="medicationDosage" name="dosage" class="form-input" placeholder="e.g., 10mg, 1 tablet" required>
+                        <div class="form-error" id="dosageError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="medicationFrequency" class="form-label">Frequency *</label>
+                        <select id="medicationFrequency" name="frequency" class="form-select" required>
+                            <option value="">Select frequency</option>
+                            <option value="Once daily">Once daily</option>
+                            <option value="Twice daily">Twice daily</option>
+                            <option value="Three times daily">Three times daily</option>
+                            <option value="Four times daily">Four times daily</option>
+                            <option value="Every other day">Every other day</option>
+                            <option value="Weekly">Weekly</option>
+                            <option value="As needed">As needed</option>
+                        </select>
+                        <div class="form-error" id="frequencyError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="medicationTime" class="form-label">Time(s) *</label>
+                        <input type="text" id="medicationTime" name="time" class="form-input" placeholder="e.g., 08:00, 20:00" required>
+                        <div class="text-xs text-muted mt-1">For multiple times, separate with commas (e.g., 08:00, 14:00, 20:00)</div>
+                        <div class="form-error" id="timeError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="medicationStartDate" class="form-label">Start Date</label>
+                        <input type="date" id="medicationStartDate" name="startDate" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="medicationEndDate" class="form-label">End Date (Optional)</label>
+                        <input type="date" id="medicationEndDate" name="endDate" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="medicationInstructions" class="form-label">Instructions</label>
+                        <textarea id="medicationInstructions" name="instructions" class="form-textarea" placeholder="Special instructions, e.g., take with food, avoid alcohol"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="medicationPrescriber" class="form-label">Prescribing Doctor</label>
+                        <input type="text" id="medicationPrescriber" name="prescriber" class="form-input" placeholder="Dr. Name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="medicationReminders" name="reminders" class="mr-2" checked>
+                            <span>Enable reminders</span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="Modal.close('addMedicationModal')">Cancel</button>
+                <button type="submit" form="medicationForm" class="btn btn-primary">Save Medication</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medication Details Modal -->
+    <div class="modal-overlay" id="medicationDetailsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="detailsTitle">Medication Details</h2>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="medicationDetails">
+                    <!-- Details will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="Modal.close('medicationDetailsModal')">Close</button>
+                <button type="button" class="btn btn-outline" id="editMedicationBtn">Edit</button>
+                <button type="button" class="btn btn-danger" id="deleteMedicationBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="loading-states.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="app.js"></script>
+    <script>
+        let currentMedicationId = null;
+        let filteredMedications = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMedications();
+            setupEventListeners();
+            updateStats();
+            
+            // Check if we should open add modal from URL hash
+            if (window.location.hash === '#add') {
+                Modal.open('addMedicationModal');
+            }
+        });
+
+        function setupEventListeners() {
+            // Search functionality
+            document.getElementById('searchMedications').addEventListener('input', filterMedications);
+            document.getElementById('filterFrequency').addEventListener('change', filterMedications);
+            document.getElementById('filterStatus').addEventListener('change', filterMedications);
+
+            // Form submission
+            document.getElementById('medicationForm').addEventListener('submit', async function(e) { await handleMedicationSubmit(e); });
+
+            // Details modal buttons
+            document.getElementById('editMedicationBtn').addEventListener('click', function() {
+                Modal.close('medicationDetailsModal');
+                editMedication(currentMedicationId);
+            });
+
+            document.getElementById('deleteMedicationBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete this medication?')) {
+                    deleteMedication(currentMedicationId);
+                    Modal.close('medicationDetailsModal');
+                }
+            });
+        }
+
+        function loadMedications() {
+            const medications = AppState.medications;
+            filteredMedications = [...medications];
+            renderMedications();
+        }
+
+        function renderMedications() {
+            const container = document.getElementById('medicationsList');
+            
+            if (filteredMedications.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="text-6xl mb-4">💊</div>
+                        <h3 class="text-xl font-semibold mb-2">No medications found</h3>
+                        <p class="text-muted mb-4">Add your first medication to get started</p>
+                        <button class="btn btn-primary" onclick="Modal.open('addMedicationModal')">
+                            Add Medication
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredMedications.map(med => {
+                const nextDose = new Date(med.nextDose);
+                const now = new Date();
+                const isOverdue = nextDose < now;
+                const isDueToday = nextDose.toDateString() === now.toDateString();
+                
+                let statusBadge = '';
+                if (isOverdue) {
+                    statusBadge = '<span class="badge badge-danger">Overdue</span>';
+                } else if (isDueToday) {
+                    statusBadge = '<span class="badge badge-warning">Due Today</span>';
+                } else {
+                    statusBadge = '<span class="badge badge-secondary">Upcoming</span>';
+                }
+
+                return `
+                    <div class="medication-item border-b border-gray-200 p-4 hover:bg-gray-50 cursor-pointer" onclick="showMedicationDetails(${med.id})">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="medication-icon text-2xl mr-4">💊</div>
+                                <div>
+                                    <h3 class="font-semibold text-lg">${med.name}</h3>
+                                    <p class="text-muted">${med.dosage} - ${med.frequency}</p>
+                                    <p class="text-sm text-muted">Next dose: ${Utils.formatDateTime(med.nextDose)}</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                ${statusBadge}
+                                <div class="text-sm text-muted mt-1">${Utils.getTimeUntil(med.nextDose)}</div>
+                                <button class="btn btn-sm btn-success mt-2" onclick="event.stopPropagation(); markMedicationTaken(${med.id})">
+                                    Mark Taken
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterMedications() {
+            const searchTerm = document.getElementById('searchMedications').value.toLowerCase();
+            const frequencyFilter = document.getElementById('filterFrequency').value;
+            const statusFilter = document.getElementById('filterStatus').value;
+
+            filteredMedications = AppState.medications.filter(med => {
+                const matchesSearch = med.name.toLowerCase().includes(searchTerm) || 
+                                    med.dosage.toLowerCase().includes(searchTerm);
+                
+                const matchesFrequency = !frequencyFilter || med.frequency === frequencyFilter;
+                
+                let matchesStatus = true;
+                if (statusFilter) {
+                    const nextDose = new Date(med.nextDose);
+                    const now = new Date();
+                    
+                    switch (statusFilter) {
+                        case 'due':
+                            matchesStatus = nextDose.toDateString() === now.toDateString();
+                            break;
+                        case 'overdue':
+                            matchesStatus = nextDose < now;
+                            break;
+                        case 'upcoming':
+                            matchesStatus = nextDose > now;
+                            break;
+                    }
+                }
+                
+                return matchesSearch && matchesFrequency && matchesStatus;
+            });
+
+            renderMedications();
+        }
+
+        async function handleMedicationSubmit(e) {
+            e.preventDefault();
+            console.log('Medication form submitted');
+            
+            // Clear previous errors
+            document.querySelectorAll('.form-error').forEach(el => el.textContent = '');
+            
+            const formData = new FormData(e.target);
+            const medicationData = {
+                name: formData.get('name').trim(),
+                dosage: formData.get('dosage').trim(),
+                frequency: formData.get('frequency'),
+                time: formData.get('time').trim(),
+                startDate: formData.get('startDate'),
+                endDate: formData.get('endDate'),
+                instructions: formData.get('instructions').trim(),
+                prescriber: formData.get('prescriber').trim(),
+                reminders: formData.get('reminders') === 'on'
+            };
+            
+            console.log('Medication data:', medicationData);
+            
+            // Validation
+            let isValid = true;
+            
+            if (!medicationData.name) {
+                document.getElementById('nameError').textContent = 'Medication name is required';
+                isValid = false;
+            }
+            
+            if (!medicationData.dosage) {
+                document.getElementById('dosageError').textContent = 'Dosage is required';
+                isValid = false;
+            }
+            
+            if (!medicationData.frequency) {
+                document.getElementById('frequencyError').textContent = 'Frequency is required';
+                isValid = false;
+            }
+            
+            if (!medicationData.time) {
+                document.getElementById('timeError').textContent = 'Time is required';
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Calculate next dose
+            const nextDose = calculateNextDose(medicationData.time, medicationData.startDate);
+            
+            const medicationId = document.getElementById('medicationId').value;
+            
+            if (medicationId) {
+                // Update existing medication
+                const index = AppState.medications.findIndex(med => med.id == medicationId);
+                if (index !== -1) {
+                    AppState.medications[index] = {
+                        ...AppState.medications[index],
+                        ...medicationData,
+                        nextDose: nextDose.toISOString()
+                    };
+                }
+            } else {
+                // Add new medication
+                const newMedication = {
+                    id: Utils.generateId(),
+                    ...medicationData,
+                    nextDose: nextDose.toISOString(),
+                    createdAt: new Date().toISOString()
+                };
+                
+                AppState.medications.push(newMedication);
+            }
+            
+            await AppState.saveMedications();
+            Utils.showNotification('Medication saved successfully!', 'success');
+            
+            Modal.close('addMedicationModal');
+            loadMedications();
+            updateStats();
+            
+            // Reset form
+            e.target.reset();
+            document.getElementById('medicationId').value = '';
+            document.getElementById('medicationModalTitle').textContent = 'Add Medication';
+        }
+
+        function calculateNextDose(timeString, startDate) {
+            const times = timeString.split(',').map(t => t.trim());
+            const firstTime = times[0];
+            const [hours, minutes] = firstTime.split(':').map(Number);
+            
+            let nextDose = new Date();
+            if (startDate) {
+                nextDose = new Date(startDate);
+            }
+            
+            nextDose.setHours(hours, minutes, 0, 0);
+            
+            // If the time has passed today, set for tomorrow
+            if (nextDose <= new Date()) {
+                nextDose.setDate(nextDose.getDate() + 1);
+            }
+            
+            return nextDose;
+        }
+
+        function showMedicationDetails(medicationId) {
+            const medication = AppState.medications.find(med => med.id == medicationId);
+            if (!medication) return;
+            
+            currentMedicationId = medicationId;
+            
+            document.getElementById('detailsTitle').textContent = medication.name;
+            document.getElementById('medicationDetails').innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-semibold">Dosage</h4>
+                        <p class="text-muted">${medication.dosage}</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold">Frequency</h4>
+                        <p class="text-muted">${medication.frequency}</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold">Time(s)</h4>
+                        <p class="text-muted">${medication.time}</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold">Next Dose</h4>
+                        <p class="text-muted">${Utils.formatDateTime(medication.nextDose)}</p>
+                    </div>
+                    
+                    ${medication.instructions ? `
+                        <div>
+                            <h4 class="font-semibold">Instructions</h4>
+                            <p class="text-muted">${medication.instructions}</p>
+                        </div>
+                    ` : ''}
+                    
+                    ${medication.prescriber ? `
+                        <div>
+                            <h4 class="font-semibold">Prescribed by</h4>
+                            <p class="text-muted">${medication.prescriber}</p>
+                        </div>
+                    ` : ''}
+                    
+                    ${medication.startDate ? `
+                        <div>
+                            <h4 class="font-semibold">Start Date</h4>
+                            <p class="text-muted">${Utils.formatDate(medication.startDate)}</p>
+                        </div>
+                    ` : ''}
+                    
+                    ${medication.endDate ? `
+                        <div>
+                            <h4 class="font-semibold">End Date</h4>
+                            <p class="text-muted">${Utils.formatDate(medication.endDate)}</p>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            Modal.open('medicationDetailsModal');
+        }
+
+        function editMedication(medicationId) {
+            const medication = AppState.medications.find(med => med.id == medicationId);
+            if (!medication) return;
+            
+            // Populate form with medication data
+            document.getElementById('medicationId').value = medication.id;
+            document.getElementById('medicationName').value = medication.name;
+            document.getElementById('medicationDosage').value = medication.dosage;
+            document.getElementById('medicationFrequency').value = medication.frequency;
+            document.getElementById('medicationTime').value = medication.time;
+            document.getElementById('medicationStartDate').value = medication.startDate || '';
+            document.getElementById('medicationEndDate').value = medication.endDate || '';
+            document.getElementById('medicationInstructions').value = medication.instructions || '';
+            document.getElementById('medicationPrescriber').value = medication.prescriber || '';
+            document.getElementById('medicationReminders').checked = medication.reminders !== false;
+            
+            document.getElementById('medicationModalTitle').textContent = 'Edit Medication';
+            Modal.open('addMedicationModal');
+        }
+
+        function deleteMedication(medicationId) {
+            const index = AppState.medications.findIndex(med => med.id == medicationId);
+            if (index !== -1) {
+                AppState.medications.splice(index, 1);
+                AppState.saveMedications();
+                Utils.showNotification('Medication deleted successfully!', 'success');
+                loadMedications();
+                updateStats();
+            }
+        }
+
+        async function markMedicationTaken(medicationId) {
+            console.log('Marking medication taken:', medicationId);
+            const medication = AppState.medications.find(med => med.id == medicationId);
+            if (medication) {
+                console.log('Found medication:', medication);
+                
+                // Add taken timestamp
+                if (!medication.takenHistory) {
+                    medication.takenHistory = [];
+                }
+                medication.takenHistory.push({
+                    timestamp: new Date().toISOString(),
+                    date: new Date().toDateString()
+                });
+                
+                // Calculate next dose based on frequency
+                const nextDose = new Date(medication.nextDose);
+                
+                switch (medication.frequency) {
+                    case 'Once daily':
+                        nextDose.setDate(nextDose.getDate() + 1);
+                        break;
+                    case 'Twice daily':
+                        nextDose.setHours(nextDose.getHours() + 12);
+                        break;
+                    case 'Three times daily':
+                        nextDose.setHours(nextDose.getHours() + 8);
+                        break;
+                    case 'Four times daily':
+                        nextDose.setHours(nextDose.getHours() + 6);
+                        break;
+                    case 'Every other day':
+                        nextDose.setDate(nextDose.getDate() + 2);
+                        break;
+                    case 'Weekly':
+                        nextDose.setDate(nextDose.getDate() + 7);
+                        break;
+                    default:
+                        nextDose.setDate(nextDose.getDate() + 1);
+                }
+                
+                medication.nextDose = nextDose.toISOString();
+                medication.lastTaken = new Date().toISOString();
+                
+                console.log('Updated medication:', medication);
+                
+                await AppState.saveMedications();
+                
+                Utils.showNotification(`${medication.name} marked as taken!`, 'success');
+                loadMedications();
+                updateStats();
+            } else {
+                console.error('Medication not found:', medicationId);
+            }
+        }
+
+        function updateStats() {
+            const medications = AppState.medications;
+            const now = new Date();
+            
+            document.getElementById('totalMedications').textContent = medications.length;
+            
+            const dueToday = medications.filter(med => {
+                const nextDose = new Date(med.nextDose);
+                return nextDose.toDateString() === now.toDateString();
+            });
+            document.getElementById('dueTodayCount').textContent = dueToday.length;
+            
+            const overdue = medications.filter(med => {
+                const nextDose = new Date(med.nextDose);
+                return nextDose < now;
+            });
+            document.getElementById('overdueCount').textContent = overdue.length;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Health Platform Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .card { background: white; padding: 20px; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .btn { background: #5b8fb9; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .success { color: green; }
+        .error { color: red; }
+        .loading { color: orange; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🏥 Minimal Health Platform Test</h1>
+        <div id="status" class="loading">Initializing...</div>
+        
+        <div style="margin: 20px 0;">
+            <button class="btn" onclick="testSignup()">Test Signup</button>
+            <button class="btn" onclick="testLogin()">Test Login</button>
+            <button class="btn" onclick="checkAppState()">Check AppState</button>
+        </div>
+        
+        <div id="results"></div>
+    </div>
+
+    <script src="loading-states.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        const statusDiv = document.getElementById('status');
+        const resultsDiv = document.getElementById('results');
+
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = `[${new Date().toLocaleTimeString()}] ${message}`;
+            resultsDiv.appendChild(div);
+        }
+
+        // Wait for everything to load
+        setTimeout(() => {
+            if (window.AppState && window.Navigation && window.healthDB) {
+                statusDiv.className = 'success';
+                statusDiv.textContent = '✅ All systems ready';
+                log('✅ AppState loaded', 'success');
+                log('✅ Navigation loaded', 'success');
+                log('✅ HealthDB loaded', 'success');
+            } else {
+                statusDiv.className = 'error';
+                statusDiv.textContent = '❌ System initialization failed';
+                log(`❌ AppState: ${window.AppState ? 'OK' : 'Missing'}`, 'error');
+                log(`❌ Navigation: ${window.Navigation ? 'OK' : 'Missing'}`, 'error');
+                log(`❌ HealthDB: ${window.healthDB ? 'OK' : 'Missing'}`, 'error');
+            }
+        }, 2000);
+
+        async function testSignup() {
+            log('🧪 Testing signup...', 'loading');
+            try {
+                const result = await Navigation.signupUser('test@example.com', 'password123', {
+                    fullName: 'Test User',
+                    email: 'test@example.com'
+                });
+                log(`✅ Signup result: ${JSON.stringify(result)}`, 'success');
+            } catch (error) {
+                log(`❌ Signup error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testLogin() {
+            log('🧪 Testing login...', 'loading');
+            try {
+                const result = await Navigation.loginUser('test@example.com', 'password123');
+                log(`✅ Login result: ${JSON.stringify(result)}`, 'success');
+            } catch (error) {
+                log(`❌ Login error: ${error.message}`, 'error');
+            }
+        }
+
+        function checkAppState() {
+            log('🧪 Checking AppState...', 'loading');
+            if (window.AppState) {
+                log(`✅ Medications: ${AppState.medications.length}`, 'success');
+                log(`✅ Appointments: ${AppState.appointments.length}`, 'success');
+                log(`✅ Vitals: ${AppState.vitals.length}`, 'success');
+                log(`✅ Current User: ${AppState.currentUser || 'None'}`, 'success');
+            } else {
+                log('❌ AppState not available', 'error');
+            }
+        }
+
+        // Capture errors
+        window.addEventListener('error', (e) => {
+            log(`❌ Error: ${e.message} at ${e.filename}:${e.lineno}`, 'error');
+        });
+
+        window.addEventListener('unhandledrejection', (e) => {
+            log(`❌ Promise rejection: ${e.reason}`, 'error');
+        });
+    </script>
+</body>
+</html>

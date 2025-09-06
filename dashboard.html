@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Health Management Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="dashboard.html" class="logo">HealthCare+</a>
+                
+                <ul class="nav-menu">
+                    <li><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
+                    <li><a href="medications.html" class="nav-link">Medications</a></li>
+                    <li><a href="appointments.html" class="nav-link">Appointments</a></li>
+                    <li><a href="vitals.html" class="nav-link">Vitals</a></li>
+                    <li><a href="profile.html" class="nav-link">Profile</a></li>
+                </ul>
+                
+                <div class="nav-actions">
+                    <button class="btn btn-outline btn-sm" id="logoutBtn">Logout</button>
+                    <button class="nav-toggle">☰</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sidebar for mobile -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link active">
+                        <span class="sidebar-icon">📊</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="medications.html" class="sidebar-link">
+                        <span class="sidebar-icon">💊</span>
+                        Medications
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="appointments.html" class="sidebar-link">
+                        <span class="sidebar-icon">📅</span>
+                        Appointments
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="vitals.html" class="sidebar-link">
+                        <span class="sidebar-icon">❤️</span>
+                        Vital Signs
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="profile.html" class="sidebar-link">
+                        <span class="sidebar-icon">👤</span>
+                        Profile
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <span class="sidebar-icon">⚙️</span>
+                        Settings
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="help.html" class="sidebar-link">
+                        <span class="sidebar-icon">❓</span>
+                        Help
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Welcome Section -->
+                <div class="welcome-section mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome back, <span id="userName">User</span>!</h1>
+                    <p class="text-muted">Here's your health overview for today</p>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="stats-grid mb-8">
+                    <div class="stat-card">
+                        <div class="stat-value" id="medicationsToday">2</div>
+                        <div class="stat-label">Medications Today</div>
+                        <div class="stat-change positive">+1 from yesterday</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value" id="upcomingAppointments">1</div>
+                        <div class="stat-label">Upcoming Appointments</div>
+                        <div class="stat-change">Next in 3 days</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value" id="lastBP">120/80</div>
+                        <div class="stat-label">Last Blood Pressure</div>
+                        <div class="stat-change positive">Normal range</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-value" id="lastWeight">70.5</div>
+                        <div class="stat-label">Weight (kg)</div>
+                        <div class="stat-change positive">-0.3 from last week</div>
+                    </div>
+                </div>
+
+                <!-- Main Dashboard Grid -->
+                <div class="card-grid">
+                    <!-- Medication Reminders -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Medication Reminders</h2>
+                            <p class="card-subtitle">Upcoming doses today</p>
+                        </div>
+                        
+                        <div id="medicationReminders">
+                            <!-- Medication reminders will be populated by JavaScript -->
+                        </div>
+                        
+                        <div class="mt-4">
+                            <a href="medications.html" class="btn btn-outline btn-sm">View All Medications</a>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Appointments -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Upcoming Appointments</h2>
+                            <p class="card-subtitle">Your next medical visits</p>
+                        </div>
+                        
+                        <div id="upcomingAppointmentsList">
+                            <!-- Appointments will be populated by JavaScript -->
+                        </div>
+                        
+                        <div class="mt-4">
+                            <a href="appointments.html" class="btn btn-outline btn-sm">View All Appointments</a>
+                        </div>
+                    </div>
+
+                    <!-- Vital Signs Summary -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Vital Signs Trends</h2>
+                            <p class="card-subtitle">Last 7 days overview</p>
+                        </div>
+                        
+                        <div class="vitals-summary">
+                            <div class="vital-item mb-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Blood Pressure</span>
+                                    <span class="badge badge-success">Normal</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 75%"></div>
+                                </div>
+                                <div class="text-sm text-muted mt-1">Average: 120/80 mmHg</div>
+                            </div>
+                            
+                            <div class="vital-item mb-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Heart Rate</span>
+                                    <span class="badge badge-success">Good</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 70%"></div>
+                                </div>
+                                <div class="text-sm text-muted mt-1">Average: 72 bpm</div>
+                            </div>
+                            
+                            <div class="vital-item">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Blood Sugar</span>
+                                    <span class="badge badge-success">Normal</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 80%"></div>
+                                </div>
+                                <div class="text-sm text-muted mt-1">Average: 95 mg/dL</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <a href="vitals.html" class="btn btn-outline btn-sm">View Detailed Charts</a>
+                        </div>
+                    </div>
+
+                    <!-- Health Tips -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Today's Health Tip</h2>
+                            <p class="card-subtitle">Personalized recommendation</p>
+                        </div>
+                        
+                        <div class="health-tip">
+                            <div class="text-lg mb-3">💧 Stay Hydrated</div>
+                            <p class="text-muted mb-4">
+                                Drinking adequate water helps maintain healthy blood pressure and supports medication effectiveness. 
+                                Aim for 8 glasses of water throughout the day.
+                            </p>
+                            <div class="flex items-center">
+                                <div class="progress-bar flex-1 mr-3">
+                                    <div class="progress-fill" style="width: 60%"></div>
+                                </div>
+                                <span class="text-sm text-muted">6/8 glasses</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <a href="help.html" class="btn btn-outline btn-sm">More Health Tips</a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Quick Actions</h2>
+                            <p class="card-subtitle">Common tasks</p>
+                        </div>
+                        
+                        <div class="quick-actions">
+                            <button class="btn btn-primary w-full mb-3" onclick="Modal.open('addVitalModal')">
+                                📊 Log Vital Signs
+                            </button>
+                            <button class="btn btn-secondary w-full mb-3" onclick="window.location.href='medications.html#add'">
+                                💊 Add Medication
+                            </button>
+                            <button class="btn btn-secondary w-full mb-3" onclick="window.location.href='appointments.html#add'">
+                                📅 Schedule Appointment
+                            </button>
+                            <button class="btn btn-outline w-full">
+                                📱 Emergency Contacts
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent Activity</h2>
+                            <p class="card-subtitle">Your health journey</p>
+                        </div>
+                        
+                        <div class="activity-list">
+                            <div class="activity-item flex items-center mb-3">
+                                <div class="activity-icon mr-3">💊</div>
+                                <div class="flex-1">
+                                    <div class="font-medium">Took Lisinopril 10mg</div>
+                                    <div class="text-sm text-muted">2 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item flex items-center mb-3">
+                                <div class="activity-icon mr-3">📊</div>
+                                <div class="flex-1">
+                                    <div class="font-medium">Logged blood pressure: 118/78</div>
+                                    <div class="text-sm text-muted">Yesterday</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item flex items-center">
+                                <div class="activity-icon mr-3">📅</div>
+                                <div class="flex-1">
+                                    <div class="font-medium">Scheduled appointment with Dr. Johnson</div>
+                                    <div class="text-sm text-muted">2 days ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Quick Add Vital Modal -->
+    <div class="modal-overlay" id="addVitalModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Log Vital Signs</h2>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="quickVitalForm">
+                    <div class="form-group">
+                        <label for="quickBP" class="form-label">Blood Pressure (systolic/diastolic)</label>
+                        <div class="flex gap-2">
+                            <input type="number" id="quickBPSystolic" class="form-input" placeholder="120" min="70" max="200">
+                            <span class="flex items-center">/</span>
+                            <input type="number" id="quickBPDiastolic" class="form-input" placeholder="80" min="40" max="120">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="quickHeartRate" class="form-label">Heart Rate (bpm)</label>
+                        <input type="number" id="quickHeartRate" class="form-input" placeholder="72" min="40" max="200">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="quickWeight" class="form-label">Weight (kg)</label>
+                        <input type="number" id="quickWeight" class="form-input" placeholder="70.5" step="0.1" min="30" max="300">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="Modal.close('addVitalModal')">Cancel</button>
+                <button type="submit" form="quickVitalForm" class="btn btn-primary">Save Vitals</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="loading-states.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Dashboard-specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const loaderId = loadingManager.show('Loading dashboard...');
+            
+            loadDashboardData().then(() => {
+                loadingManager.hide(loaderId);
+            }).catch((error) => {
+                loadingManager.hide(loaderId);
+                console.error('Dashboard error:', error);
+                // Don't show error to user for dashboard loading
+            });
+            
+            setupQuickVitalForm();
+            
+            // Listen for vitals updates from other pages
+            window.addEventListener('vitalsUpdated', function(event) {
+                updateDashboardStats();
+            });
+        });
+
+        async function loadDashboardData() {
+            try {
+                // Load user name
+                const userName = localStorage.getItem('userName') || 'User';
+                document.getElementById('userName').textContent = userName;
+
+                // Load medication reminders
+                loadMedicationReminders();
+                
+                // Load upcoming appointments
+                loadUpcomingAppointments();
+                
+                // Update stats
+                updateDashboardStats();
+                
+                return Promise.resolve();
+            } catch (error) {
+                console.error('Dashboard loading error:', error);
+                return Promise.reject(error);
+            }
+        }
+
+        function loadMedicationReminders() {
+            const container = document.getElementById('medicationReminders');
+            const medications = AppState.medications;
+            
+            if (medications.length === 0) {
+                container.innerHTML = '<p class="text-muted">No medications scheduled for today.</p>';
+                return;
+            }
+
+            const today = new Date();
+            const todayMeds = medications.filter(med => {
+                const nextDose = new Date(med.nextDose);
+                return nextDose.toDateString() === today.toDateString();
+            });
+
+            if (todayMeds.length === 0) {
+                container.innerHTML = '<p class="text-muted">No medications due today.</p>';
+                return;
+            }
+
+            container.innerHTML = todayMeds.map(med => `
+                <div class="medication-reminder flex items-center justify-between p-3 mb-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-center">
+                        <div class="medication-icon mr-3">💊</div>
+                        <div>
+                            <div class="font-medium">${med.name}</div>
+                            <div class="text-sm text-muted">${med.dosage} - ${med.frequency}</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-medium">${Utils.getTimeUntil(med.nextDose)}</div>
+                        <button class="btn btn-sm btn-success mt-1" onclick="markMedicationTaken(${med.id})">
+                            Mark Taken
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadUpcomingAppointments() {
+            const container = document.getElementById('upcomingAppointmentsList');
+            const appointments = AppState.appointments;
+            
+            if (appointments.length === 0) {
+                container.innerHTML = '<p class="text-muted">No upcoming appointments.</p>';
+                return;
+            }
+
+            // Sort by date and get next 3
+            const sortedAppointments = appointments
+                .filter(apt => new Date(apt.date) >= new Date())
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .slice(0, 3);
+
+            if (sortedAppointments.length === 0) {
+                container.innerHTML = '<p class="text-muted">No upcoming appointments.</p>';
+                return;
+            }
+
+            container.innerHTML = sortedAppointments.map(apt => `
+                <div class="appointment-item flex items-center p-3 mb-3 bg-gray-50 rounded-lg">
+                    <div class="appointment-icon mr-3">👨‍⚕️</div>
+                    <div class="flex-1">
+                        <div class="font-medium">${apt.doctor}</div>
+                        <div class="text-sm text-muted">${apt.specialty}</div>
+                        <div class="text-sm text-primary">${Utils.formatDate(apt.date)} at ${Utils.formatTime(apt.time)}</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm text-muted">${Utils.getTimeUntil(apt.date)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateDashboardStats() {
+            const vitals = AppState.vitals;
+            const medications = AppState.medications;
+            const appointments = AppState.appointments;
+
+            // Update medication count for today
+            const today = new Date();
+            const todayMeds = medications.filter(med => {
+                const nextDose = new Date(med.nextDose);
+                return nextDose.toDateString() === today.toDateString();
+            });
+            document.getElementById('medicationsToday').textContent = todayMeds.length;
+
+            // Update upcoming appointments count
+            const upcomingApts = appointments.filter(apt => new Date(apt.date) >= today);
+            document.getElementById('upcomingAppointments').textContent = upcomingApts.length;
+
+            // Update latest vitals
+            if (vitals.length > 0) {
+                const latest = vitals[0];
+                if (latest.bloodPressure) {
+                    document.getElementById('lastBP').textContent = 
+                        `${latest.bloodPressure.systolic}/${latest.bloodPressure.diastolic}`;
+                }
+                if (latest.weight) {
+                    document.getElementById('lastWeight').textContent = latest.weight;
+                }
+            }
+        }
+
+        function markMedicationTaken(medicationId) {
+            // Find the medication and update next dose
+            const medication = AppState.medications.find(med => med.id === medicationId);
+            if (medication) {
+                // Add 24 hours to next dose (simplified logic)
+                const nextDose = new Date(medication.nextDose);
+                nextDose.setDate(nextDose.getDate() + 1);
+                medication.nextDose = nextDose.toISOString();
+                
+                AppState.saveMedications();
+                Utils.showNotification(`${medication.name} marked as taken!`, 'success');
+                
+                // Reload reminders
+                loadMedicationReminders();
+                updateDashboardStats();
+            }
+        }
+
+        function setupQuickVitalForm() {
+            document.getElementById('quickVitalForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const systolic = document.getElementById('quickBPSystolic').value;
+                const diastolic = document.getElementById('quickBPDiastolic').value;
+                const heartRate = document.getElementById('quickHeartRate').value;
+                const weight = document.getElementById('quickWeight').value;
+                
+                const newVital = {
+                    id: Utils.generateId(),
+                    date: new Date().toISOString(),
+                    bloodPressure: systolic && diastolic ? {
+                        systolic: parseInt(systolic),
+                        diastolic: parseInt(diastolic)
+                    } : null,
+                    heartRate: heartRate ? parseInt(heartRate) : null,
+                    weight: weight ? parseFloat(weight) : null
+                };
+                
+                // Use the new addVital method to ensure proper updates
+                AppState.addVital(newVital);
+                
+                Utils.showNotification('Vitals logged successfully!', 'success');
+                Modal.close('addVitalModal');
+                
+                // Reset form
+                this.reset();
+                
+                // Update dashboard
+                updateDashboardStats();
+            });
+        }
+    </script>
+</body>
+</html>

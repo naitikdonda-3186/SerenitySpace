@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Firebase Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .loading { background: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <h1>🔥 Simple Firebase Test</h1>
+    <div id="status" class="status loading">Testing Firebase connection...</div>
+    <div id="details"></div>
+
+    <script type="module">
+        const statusDiv = document.getElementById('status');
+        const detailsDiv = document.getElementById('details');
+
+        try {
+            // Import Firebase modules
+            const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+            const { getAuth } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+            const { getFirestore } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+
+            // Your Firebase config
+            const firebaseConfig = {
+                apiKey: "AIzaSyCoOwvcbzXCfznjfegK7lzRn-XyzYovBkM",
+                authDomain: "serenityspace-83b35.firebaseapp.com",
+                projectId: "serenityspace-83b35",
+                storageBucket: "serenityspace-83b35.firebasestorage.app",
+                messagingSenderId: "202263016311",
+                appId: "1:202263016311:web:6b0acc7bef7673f7fce772"
+            };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+
+            statusDiv.className = 'status success';
+            statusDiv.textContent = '✅ Firebase connected successfully!';
+            
+            detailsDiv.innerHTML = `
+                <h3>Connection Details:</h3>
+                <p><strong>Project ID:</strong> ${firebaseConfig.projectId}</p>
+                <p><strong>Auth Domain:</strong> ${firebaseConfig.authDomain}</p>
+                <p><strong>Auth Service:</strong> ${auth ? 'Ready' : 'Not Ready'}</p>
+                <p><strong>Firestore:</strong> ${db ? 'Ready' : 'Not Ready'}</p>
+                <p><strong>Status:</strong> All services initialized</p>
+            `;
+
+        } catch (error) {
+            statusDiv.className = 'status error';
+            statusDiv.textContent = '❌ Firebase connection failed';
+            
+            detailsDiv.innerHTML = `
+                <h3>Error Details:</h3>
+                <p><strong>Error:</strong> ${error.message}</p>
+                <p><strong>Type:</strong> ${error.name}</p>
+                <pre>${error.stack}</pre>
+            `;
+        }
+    </script>
+</body>
+</html>

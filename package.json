@@ -1,0 +1,20 @@
+{
+  "name": "health-management-platform",
+  "version": "1.0.0",
+  "description": "Intelligent Health Management Platform with Firebase integration",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "python3 -m http.server 8080",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["health", "medical", "firebase"],
+  "author": "Health Platform Team",
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^12.2.1"
+  }
+}

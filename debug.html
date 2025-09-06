@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Firebase Connection</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .error { color: red; }
+        .success { color: green; }
+        .info { color: blue; }
+        pre { background: white; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🐛 Firebase Debug Console</h1>
+    <div id="output"></div>
+
+    <script type="module">
+        const output = document.getElementById('output');
+        
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = `[${new Date().toLocaleTimeString()}] ${message}`;
+            output.appendChild(div);
+            console.log(message);
+        }
+
+        // Capture all errors
+        window.addEventListener('error', (e) => {
+            log(`❌ JavaScript Error: ${e.message} at ${e.filename}:${e.lineno}`, 'error');
+        });
+
+        window.addEventListener('unhandledrejection', (e) => {
+            log(`❌ Promise Rejection: ${e.reason}`, 'error');
+        });
+
+        try {
+            log('🔄 Starting Firebase debug...', 'info');
+            
+            // Test Firebase imports
+            import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js')
+                .then(() => {
+                    log('✅ Firebase app module loaded', 'success');
+                    return import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+                })
+                .then(() => {
+                    log('✅ Firebase auth module loaded', 'success');
+                    return import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                })
+                .then(() => {
+                    log('✅ Firebase firestore module loaded', 'success');
+                    
+                    // Now test the actual firebase-config.js
+                    return import('./firebase-config.js');
+                })
+                .then((module) => {
+                    log('✅ firebase-config.js loaded successfully', 'success');
+                    if (module.default && module.default.healthDB) {
+                        log('✅ HealthDatabase instance found', 'success');
+                    } else {
+                        log('⚠️ HealthDatabase instance not found', 'error');
+                    }
+                })
+                .catch((error) => {
+                    log(`❌ Import Error: ${error.message}`, 'error');
+                    log(`❌ Stack: ${error.stack}`, 'error');
+                });
+                
+        } catch (error) {
+            log(`❌ Initialization Error: ${error.message}`, 'error');
+        }
+    </script>
+</body>
+</html>
