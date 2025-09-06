@@ -5,9 +5,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
+    "start": "echo 'No build needed for static site'",
     "serve": "python3 -m http.server 8080",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
