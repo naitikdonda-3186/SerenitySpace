@@ -1,4 +1,4 @@
-// Health Management Platform - Main JavaScript File
+// SerenitySpace - Main JavaScript File
 
 // Global state management with Firebase integration
 const AppState = {

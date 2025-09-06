@@ -1,4 +1,4 @@
-// Loading States and Error Handling for Health Management Platform
+// Loading States and Error Handling for SerenitySpace
 
 class LoadingManager {
     constructor() {
