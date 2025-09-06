@@ -235,8 +235,9 @@ body {
     box-shadow: 0 2px 16px rgba(91, 143, 185, 0.08);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
     width: 100%;
+    height: 70px; /* Fixed height for mobile */
 }
 
 .nav-container {
@@ -277,12 +278,38 @@ body {
     display: none;
     background: none;
     border: none;
-    font-size: 2rem;
     cursor: pointer;
-    color: var(--text-primary);
-    padding: 0.5rem;
-    margin-left: 1rem;
-    transition: transform 0.2s ease;
+    padding: 1rem;  /* Increased padding */
+    margin-left: 0.5rem;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 44px;  /* Increased width */
+    height: 44px;  /* Increased height for better touch target */
+    position: relative;
+    z-index: 1001;
+}
+
+.hamburger {
+    display: block;
+    width: 24px;  /* Fixed width */
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    margin: 3px 0;  /* Space between lines */
+}
+
+.nav-toggle.active .hamburger:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.active .hamburger:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active .hamburger:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
 }
 
 .nav-toggle:hover {
@@ -925,8 +952,82 @@ body {
     }
     
     .nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+    
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        width: 280px;
+        height: 100%;
+        background: white;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        z-index: 1001;
+        transition: left 0.3s ease-in-out;
+        padding: 80px 0 20px 0;
+        overflow-y: auto;
+    }
+    
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .sidebar-item {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        padding: 16px 24px;
+        color: var(--gray-700);
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    
+    .sidebar-link:hover {
+        background: rgba(160, 196, 230, 0.1);
+        color: var(--primary-color);
+    }
+    
+    .sidebar-link.active {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .sidebar-icon {
+        margin-right: 12px;
+        font-size: 20px;
+        width: 24px;
+        text-align: center;
+    }
+    
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+    
+    .sidebar-overlay.active {
         display: block;
-        font-size: 2.2rem;
+    }
+    
+    .sidebar.active {
+        left: 0;
     }
     
     .card-grid {
@@ -1061,11 +1162,19 @@ body {
                 
                 <div class="nav-actions">
                     <button class="btn btn-outline btn-sm" id="logoutBtn">Logout</button>
-                    <button class="nav-toggle">☰</button>
+                    <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span class="hamburger"></span>
+                        <span class="hamburger"></span>
+                        <span class="hamburger"></span>
+                        <span class="sr-only">Menu</span>
+                    </button>
                 </div>
             </div>
         </nav>
 
+        <!-- Sidebar overlay -->
+        <div class="sidebar-overlay"></div>
+        
         <!-- Sidebar for mobile -->
         <aside class="sidebar">
             <ul class="sidebar-menu">
@@ -1328,11 +1437,17 @@ body {
             <div class="modal-body">
                 <form id="quickVitalForm">
                     <div class="form-group">
-                        <label for="quickBP" class="form-label">Blood Pressure (systolic/diastolic)</label>
-                        <div class="flex gap-2">
-                            <input type="number" id="quickBPSystolic" class="form-input" placeholder="120" min="70" max="200">
-                            <span class="flex items-center">/</span>
-                            <input type="number" id="quickBPDiastolic" class="form-input" placeholder="80" min="40" max="120">
+                        <div class="form-label">Blood Pressure</div>
+                        <div class="flex gap-2 items-center">
+                            <div class="flex-1">
+                                <label for="quickBPSystolic" class="sr-only">Systolic</label>
+                                <input type="number" id="quickBPSystolic" class="form-input w-full" placeholder="120" min="70" max="200" aria-label="Systolic blood pressure">
+                            </div>
+                            <span class="text-gray-500">/</span>
+                            <div class="flex-1">
+                                <label for="quickBPDiastolic" class="sr-only">Diastolic</label>
+                                <input type="number" id="quickBPDiastolic" class="form-input w-full" placeholder="80" min="40" max="120" aria-label="Diastolic blood pressure">
+                            </div>
                         </div>
                     </div>
                     
@@ -1358,6 +1473,64 @@ body {
     <script type="module" src="firebase-config.js"></script>
     <script src="auth-guard.js"></script>
     <script src="app.js"></script>
+    <script>
+        console.log('Dashboard script loaded');
+        console.log('Navigation object exists:', typeof Navigation !== 'undefined');
+        
+        // Initialize navigation after app.js is loaded
+        if (typeof Navigation !== 'undefined') {
+            console.log('Initializing Navigation...');
+            try {
+                Navigation.init();
+                console.log('Navigation.init() called successfully');
+                
+                // Check if mobile menu elements exist
+                const navToggle = document.querySelector('.nav-toggle');
+                const sidebar = document.querySelector('.sidebar');
+                console.log('Mobile menu elements found:', { 
+                    navToggle: !!navToggle, 
+                    sidebar: !!sidebar 
+                });
+                
+                if (navToggle && sidebar) {
+                    const overlay = document.querySelector('.sidebar-overlay');
+                    console.log('Setting up mobile menu event listeners');
+                    
+                    navToggle.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        console.log('Mobile menu button clicked');
+                        navToggle.classList.toggle('active');
+                        sidebar.classList.toggle('active');
+                        overlay.classList.toggle('active');
+                        document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+                    });
+                    
+                    // Close when clicking overlay
+                    overlay.addEventListener('click', () => {
+                        navToggle.classList.remove('active');
+                        sidebar.classList.remove('active');
+                        overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                    
+                    // Close when clicking a sidebar link
+                    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+                    sidebarLinks.forEach(link => {
+                        link.addEventListener('click', () => {
+                            navToggle.classList.remove('active');
+                            sidebar.classList.remove('active');
+                            overlay.classList.remove('active');
+                            document.body.style.overflow = '';
+                        });
+                    });
+                }
+            } catch (error) {
+                console.error('Error initializing Navigation:', error);
+            }
+        } else {
+            console.error('Navigation object not found in dashboard');
+        }
+    </script>
     <script>
         // Dashboard-specific functionality
         document.addEventListener('DOMContentLoaded', function() {
@@ -1556,6 +1729,22 @@ body {
                 updateDashboardStats();
             });
         }
+
+        // Initialize navigation and mobile menu when DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Navigation !== 'undefined') {
+                Navigation.init();
+                console.log('Navigation initialized');
+            } else {
+                console.error('Navigation object not found');
+            }
+            
+            // Re-initialize mobile menu setup
+            if (typeof Navigation !== 'undefined' && typeof Navigation.setupMobileMenu === 'function') {
+                Navigation.setupMobileMenu();
+                console.log('Mobile menu initialized');
+            }
+        });
     </script>
 </body>
 </html>

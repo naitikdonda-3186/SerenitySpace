@@ -919,6 +919,64 @@ body {
 .w-full { width: 100%; }
 .h-full { height: 100%; }
 
+/* Mobile Menu Styles */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1rem;
+    margin-left: 0.5rem;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    position: relative;
+    z-index: 1001;
+}
+
+.hamburger {
+    display: block;
+    width: 24px;
+    height: 3px;
+    background-color: var(--primary);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    margin: 3px 0;
+}
+
+.nav-toggle.active .hamburger:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.active .hamburger:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active .hamburger:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+.sidebar {
+    display: none;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav-menu {
@@ -926,8 +984,68 @@ body {
     }
     
     .nav-toggle {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 2.2rem;
+    }
+    
+    .sidebar {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: -300px;
+        width: 280px;
+        height: 100%;
+        background: white;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        z-index: 1001;
+        transition: left 0.3s ease-in-out;
+        padding: 80px 0 20px 0;
+        overflow-y: auto;
+    }
+    
+    .sidebar.active {
+        left: 0;
+    }
+    
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .sidebar-item {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        padding: 16px 24px;
+        color: var(--gray-700);
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    
+    .sidebar-link:hover {
+        background: rgba(160, 196, 230, 0.1);
+        color: var(--primary);
+    }
+    
+    .sidebar-link.active {
+        background: var(--primary);
+        color: white;
+    }
+    
+    .sidebar-icon {
+        margin-right: 12px;
+        font-size: 20px;
+        width: 24px;
+        text-align: center;
     }
     
     .card-grid {
@@ -1062,11 +1180,19 @@ body {
                 
                 <div class="nav-actions">
                     <button class="btn btn-outline btn-sm" id="logoutBtn">Logout</button>
-                    <button class="nav-toggle">☰</button>
+                    <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+                        <span class="hamburger"></span>
+                        <span class="hamburger"></span>
+                        <span class="hamburger"></span>
+                        <span class="sr-only">Menu</span>
+                    </button>
                 </div>
             </div>
         </nav>
 
+        <!-- Sidebar overlay -->
+        <div class="sidebar-overlay"></div>
+        
         <!-- Sidebar for mobile -->
         <aside class="sidebar">
             <ul class="sidebar-menu">
@@ -1292,6 +1418,48 @@ body {
     <script type="module" src="firebase-config.js"></script>
     <script src="auth-guard.js"></script>
     <script src="app.js"></script>
+    <script>
+        // Initialize mobile menu
+        document.addEventListener('DOMContentLoaded', function() {
+            const navToggle = document.querySelector('.nav-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            if (navToggle && sidebar && overlay) {
+                // Toggle sidebar when hamburger is clicked
+                navToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    navToggle.classList.toggle('active');
+                    sidebar.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                    document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+                });
+                
+                // Close when clicking overlay
+                overlay.addEventListener('click', () => {
+                    navToggle.classList.remove('active');
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+                
+                // Close when clicking a sidebar link
+                const sidebarLinks = document.querySelectorAll('.sidebar-link');
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        navToggle.classList.remove('active');
+                        sidebar.classList.remove('active');
+                        overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+                
+                console.log('Mobile menu initialized');
+            } else {
+                console.error('Mobile menu elements not found');
+            }
+        });
+    </script>
     <script>
         let charts = {};
 
